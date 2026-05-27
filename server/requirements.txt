@@ -1,0 +1,14 @@
+alembic
+aiosqlite
+asyncpg
+fastapi
+greenlet
+httpx
+passlib
+pydantic-settings
+pytest
+pytest-asyncio
+python-jose[cryptography]
+sqlalchemy
+uvicorn
+email-validator
