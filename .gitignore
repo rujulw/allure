@@ -42,6 +42,9 @@ htmlcov/
 *.sqlite3
 *.db
 
+.claude/
+.codex/
+
 # Misc
 .cache/
 tmp/
