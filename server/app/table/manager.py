@@ -102,6 +102,20 @@ class TableManager:
         self._refresh_phase(table)
         return table
 
+    def disconnect_player(self, table_id: str, player_id: str) -> TableState:
+        table = self._table(table_id)
+        seat = table.seat_for_player(player_id)
+        if seat is not None:
+            seat.connected = False
+            self._refresh_phase(table)
+            return table
+
+        if player_id in table.waiting_player_ids:
+            self._refresh_phase(table)
+            return table
+
+        raise PlayerNotAtTableError(f"Player is not present at table: {player_id}")
+
     def rejoin_table(self, table_id: str, player_id: str) -> TableState:
         table = self._table(table_id)
         seat = table.seat_for_player(player_id)

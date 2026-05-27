@@ -72,6 +72,23 @@ def decode_token(token: str) -> dict:
         ) from exc
 
 
+def get_access_subject(token: str) -> str:
+    payload = decode_token(token)
+    if payload.get("type") != "access":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+        )
+
+    subject = payload.get("sub")
+    if not isinstance(subject, str):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+        )
+    return subject
+
+
 async def get_user_by_email(session: AsyncSession, email: str) -> User | None:
     stmt: Select[tuple[User]] = select(User).where(User.email == email)
     result = await session.execute(stmt)
@@ -82,20 +99,7 @@ async def get_current_user(
     token: str = Depends(oauth2_scheme),
     session: AsyncSession = Depends(get_db),
 ) -> User:
-    payload = decode_token(token)
-    if payload.get("type") != "access":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-        )
-
-    email = payload.get("sub")
-    if not isinstance(email, str):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-        )
-
+    email = get_access_subject(token)
     user = await get_user_by_email(session, email)
     if user is None:
         raise HTTPException(
