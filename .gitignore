@@ -1,0 +1,47 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+coverage/
+.pnpm-store/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.coverage
+htmlcov/
+
+# Database and local runtime
+*.sqlite3
+*.db
+
+# Misc
+.cache/
+tmp/
